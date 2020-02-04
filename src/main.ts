@@ -3,7 +3,7 @@ import App from './App.vue';
 import router from './router';
 import store from './store';
 
-import { Button, Layout, Menu, Icon, Form, Input } from 'ant-design-vue';
+import { Button, Layout, Menu, Icon, Form, Input, Table } from 'ant-design-vue';
 
 Vue.component(Button.name, Button);
 Vue.component(Icon.name, Icon);
@@ -17,6 +17,7 @@ Vue.component(Menu.name, Menu);
 Vue.component(Menu.Item.name, Menu.Item);
 Vue.component(Menu.ItemGroup.name, Menu.ItemGroup);
 Vue.component(Menu.SubMenu.name, Menu.SubMenu);
+Vue.component(Table.name, Table);
 
 Vue.config.productionTip = false;
 

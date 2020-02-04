@@ -1,6 +1,6 @@
 import api from './api';
 
-interface UserDTO {
+export interface UserDTO {
   handle: string;
   email: string;
   rank: string;

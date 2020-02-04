@@ -1,10 +1,12 @@
 <template>
   <div>
     <h2 class="logo" @click="current = []">
-      <router-link to="/"> Codeforces 统计</router-link>
+      <router-link to="/" style="display: inline-block; height: 100%;">
+        Codeforces 统计</router-link
+      >
     </h2>
     <a-menu v-model="current" mode="horizontal" :style="{ lineHeight: '64px' }">
-      <a-menu-item key="users" @click="go('user')">
+      <a-menu-item key="user" @click="go('user')">
         <a-icon type="user" />成员
       </a-menu-item>
       <a-menu-item key="report"> <a-icon type="read" />报告 </a-menu-item>
@@ -29,10 +31,15 @@ import { Component, Vue } from 'vue-property-decorator';
 
 @Component
 export default class Nav extends Vue {
-  current = [];
+  current: string[] = [];
   go(name: string) {
     if (this.$route.name !== name) {
       this.$router.push(name);
+    }
+  }
+  created() {
+    if (this.$route.name === 'user') {
+      this.current = ['user'];
     }
   }
 }

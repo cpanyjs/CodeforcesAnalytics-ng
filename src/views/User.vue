@@ -1,55 +1,25 @@
 <template>
-  <div>
-    <a-form layout="inline" :form="form">
-      <a-form-item label="姓名" required>
-        <a-input
-          v-decorator="[
-            'name',
-            { rules: [{ required: true, message: '姓名不能为空' }] }
-          ]"
-        />
-      </a-form-item>
-      <a-form-item label="Handle" required>
-        <a-input
-          v-decorator="[
-            'handle',
-            { rules: [{ required: true, message: 'Handle 不能为空' }] }
-          ]"
-        />
-      </a-form-item>
-      <a-form-item>
-        <a-button type="primary" @click="handleSubmit" :loading="loading"
-          >添加</a-button
-        >
-      </a-form-item>
-      <a-form-item>
-        <a-button type="primary">批量添加</a-button>
-      </a-form-item>
-    </a-form>
+  <div id="user">
+    <add-form></add-form>
+    <user-table style="margin-top: 10px;"></user-table>
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
+import AddForm from '@/components/addForm.vue';
+import UserTable from '@/components/userTable.vue';
 
-@Component
-export default class User extends Vue {
-  loading = false;
-  data() {
-    return {
-      form: this.$form.createForm(this)
-    };
-  }
-  handleSubmit() {
-    this.form.validateFields(async (err, values) => {
-      if (err) return;
-      this.loading = true;
-      await this.$store.dispatch('addUser', values);
-      this.loading = false;
-      this.form.resetFields();
-    });
-  }
-}
+@Component({
+  components: { AddForm, UserTable }
+})
+export default class User extends Vue {}
 </script>
 
-<style></style>
+<style>
+#user {
+  background-color: white;
+  padding: 20px;
+  height: 100%;
+}
+</style>
