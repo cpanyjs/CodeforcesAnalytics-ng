@@ -13,8 +13,8 @@
       <a-menu-item key="user" @click="go('user')">
         <a-icon type="user" />成员
       </a-menu-item>
-      <a-menu-item key="report"> <a-icon type="read" />报告 </a-menu-item>
-      <a-sub-menu>
+      <a-menu-item key="report"><a-icon type="read" />报告</a-menu-item>
+      <!-- <a-sub-menu>
         <span slot="title" class="submenu-title-wrapper"
           ><a-icon type="setting" />设置</span
         >
@@ -25,7 +25,7 @@
           <a-menu-item key="setting:3">帮助</a-menu-item>
           <a-menu-item key="setting:4">关于</a-menu-item>
         </a-menu-item-group>
-      </a-sub-menu>
+      </a-sub-menu> -->
     </a-menu>
     <div class="nav-search">
       <a-input-search
