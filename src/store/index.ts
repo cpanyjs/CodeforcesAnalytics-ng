@@ -24,7 +24,6 @@ export default new Vuex.Store({
   actions: {
     async addUser({ commit }, { name, handle }) {
       const data = await getUserInfo(handle);
-      console.log(data);
       commit('addUser', { ...data, name });
     }
   },

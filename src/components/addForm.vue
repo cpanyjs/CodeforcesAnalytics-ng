@@ -22,7 +22,25 @@
       >
     </a-form-item>
     <a-form-item>
-      <a-button type="primary">批量添加</a-button>
+      <a-button type="primary" @click="showDrawer = true">批量添加</a-button>
+      <a-drawer
+        title="批量添加"
+        placement="right"
+        :closable="true"
+        :width="360"
+        @close="showDrawer = false"
+        :visible="showDrawer"
+      >
+        <div>
+          <a-button type="primary">添加</a-button>
+          <span style="margin-left: 10px;">格式：姓名,Handle</span>
+        </div>
+        <a-textarea
+          style="margin-top: 20px;"
+          placeholder=""
+          :autosize="{ minRows: 25, maxRows: 25 }"
+        />
+      </a-drawer>
     </a-form-item>
   </a-form>
 </template>
@@ -33,6 +51,7 @@ import { Component, Vue } from 'vue-property-decorator';
 @Component
 export default class User extends Vue {
   loading = false;
+  showDrawer = false;
   data() {
     return {
       form: this.$form.createForm(this)

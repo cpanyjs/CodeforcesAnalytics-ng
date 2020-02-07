@@ -16,10 +16,4 @@ import UserTable from '@/components/userTable.vue';
 export default class User extends Vue {}
 </script>
 
-<style>
-#user {
-  background-color: white;
-  padding: 20px;
-  height: 100%;
-}
-</style>
+<style></style>
