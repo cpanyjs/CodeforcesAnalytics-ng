@@ -48,6 +48,7 @@
 
 <script>
 import { Component, Vue } from 'vue-property-decorator';
+import { addUser } from '../store';
 
 function sleep(time) {
   return new Promise((res, rej) => {
@@ -72,15 +73,20 @@ export default class User extends Vue {
       .filter(s => s.length === 2);
     this.showDrawer = false;
     for (const [name, handle] of body) {
-      await this.$store.dispatch('addUser', { name, handle });
-      await sleep(500);
+      try {
+        if (await addUser(name, handle)) {
+          await sleep(500);
+        }
+      } catch (error) {
+        this.$message.error(`获取 ${handle} 信息失败`, 0);
+      }
     }
   }
   handleSubmit() {
     this.form.validateFields(async (err, values) => {
       if (err) return;
       this.loading = true;
-      await this.$store.dispatch('addUser', values);
+      await addUser(values.name, values.handle);
       this.loading = false;
       this.form.resetFields();
     });

@@ -2,51 +2,52 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 import createPersistedState from 'vuex-persistedstate';
 
+import localforage from 'localforage';
+import PubSub from 'pubsub-js';
+
 import { User, getUser } from '../services/cf';
 
 Vue.use(Vuex);
 
-interface State {
-  users: Array<User>;
+export default new Vuex.Store({
+  state: {},
+  mutations: {},
+  actions: {},
+  modules: {},
+  plugins: []
+});
+
+const store = localforage.createInstance({
+  name: 'cfany'
+});
+
+export function subscribe(topic: string, fn: Function) {
+  return PubSub.subscribe(topic, fn);
 }
 
-const state: State = {
-  users: []
-};
+export function unsubscribe(token: any) {
+  PubSub.unsubscribe(token);
+}
 
-export default new Vuex.Store({
-  state,
-  mutations: {
-    addUser(state, data: User) {
-      state.users.push(data);
-    },
-    delUser(state, { handle }) {
-      let id = undefined;
-      for (let i = 0; i < state.users.length; i++) {
-        if (state.users[i].handle === handle) {
-          id = i;
-          break;
-        }
-      }
-      if (id !== undefined) {
-        state.users.splice(id, 1);
-      }
-    }
-  },
-  actions: {
-    async addUser({ state, commit }, { name, handle }) {
-      if (state.users.filter(item => item.handle === handle).length > 0) {
-        return;
-      }
-      const user = await getUser(handle);
-      user.name = name;
-      commit('addUser', user);
-    }
-  },
-  modules: {},
-  plugins: [
-    createPersistedState({
-      key: 'cf'
-    })
-  ]
-});
+export async function addUser(name: string, handle: string) {
+  if (await store.getItem(handle)) {
+    return undefined;
+  }
+  const user = await getUser(handle);
+  user.name = name;
+  store.setItem(handle, user);
+  PubSub.publish('addUser', user);
+  return user;
+}
+
+export async function delUser(handle: string) {
+  store.removeItem(handle);
+}
+
+export async function getUsers() {
+  const arr: User[] = [];
+  await store.iterate(value => {
+    arr.push(value as User);
+  });
+  return arr;
+}

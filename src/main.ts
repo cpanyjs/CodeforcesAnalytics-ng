@@ -11,7 +11,8 @@ import {
   Form,
   Input,
   Table,
-  Drawer
+  Drawer,
+  message
 } from 'ant-design-vue';
 
 Vue.component(Button.name, Button);
@@ -30,6 +31,8 @@ Vue.component(Menu.ItemGroup.name, Menu.ItemGroup);
 Vue.component(Menu.SubMenu.name, Menu.SubMenu);
 Vue.component(Table.name, Table);
 Vue.component(Drawer.name, Drawer);
+
+Vue.prototype.$message = message;
 
 Vue.config.productionTip = false;
 

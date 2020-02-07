@@ -1,5 +1,6 @@
 <template>
   <a-table
+    :loading="loading"
     :columns="columns"
     :rowKey="item => item.handle"
     :dataSource="users"
@@ -20,12 +21,12 @@
     >
       {{ text }}
     </span>
-    <template slot="operation" slot-scope="text, record">
+    <template slot="operation" slot-scope="text, record, row">
       <a-button type="primary">刷新</a-button>
       <a-button
         type="danger"
         style="margin-left: 10px;"
-        @click="$store.commit('delUser', record)"
+        @click="delUser(record.handle, row)"
         >删除</a-button
       >
     </template>
@@ -34,6 +35,8 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
+import { User } from '../services/cf';
+import { getUsers, delUser, subscribe, unsubscribe } from '../store/index';
 
 @Component({})
 export default class userTable extends Vue {
@@ -68,8 +71,26 @@ export default class userTable extends Vue {
     }
   ];
 
-  get users() {
-    return this.$store.state.users;
+  loading = true;
+  users: User[] = [];
+  token: any = undefined;
+
+  async created() {
+    this.users = await getUsers();
+    this.loading = false;
+    this.token = subscribe('addUser', (topic: string, user: any) => {
+      this.users.push(user);
+    });
+  }
+  beforeDestroy() {
+    if (this.token) {
+      unsubscribe(this.token);
+    }
+  }
+
+  async delUser(handle: string, row: number) {
+    await delUser(handle);
+    this.users.splice(row, 1);
   }
 
   getColor(rating: number) {
