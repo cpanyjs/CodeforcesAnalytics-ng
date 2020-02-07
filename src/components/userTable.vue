@@ -21,6 +21,11 @@
     >
       {{ text }}
     </span>
+    <span slot="name" slot-scope="name">
+      <router-link :to="{ name: 'profile', query: { name } }">{{
+        name
+      }}</router-link>
+    </span>
     <template slot="operation" slot-scope="flag, record, row">
       <a-button
         type="primary"
@@ -70,7 +75,8 @@ export default class userTable extends Vue {
           return record.name === value;
         }
         return false;
-      }
+      },
+      scopedSlots: { customRender: 'name' }
     },
     {
       title: 'Rating',

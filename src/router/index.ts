@@ -1,5 +1,5 @@
 import Vue from 'vue';
-import VueRouter from 'vue-router';
+import VueRouter, { Route } from 'vue-router';
 import Home from '../views/Home.vue';
 import User from '../views/User.vue';
 import Report from '../views/Report.vue';
@@ -21,6 +21,15 @@ const routes = [
     path: '/report',
     name: 'report',
     component: Report
+  },
+  {
+    path: '/profile',
+    name: 'profile',
+    component: () => import('../views/Profile.vue'),
+    props: (route: Route) => ({
+      name: route.query.name,
+      handle: route.query.handle
+    })
   }
 ];
 
