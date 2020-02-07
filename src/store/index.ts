@@ -64,3 +64,15 @@ export async function getUsers() {
   });
   return arr;
 }
+
+export async function getNames() {
+  const set = new Set<string>();
+  await store.iterate((value: User) => {
+    if (value.name) {
+      set.add(value.name);
+    }
+  });
+  const arr: string[] = [];
+  set.forEach(value => arr.push(value));
+  return arr;
+}

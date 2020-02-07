@@ -46,7 +46,8 @@ import {
   updateUser,
   delUser,
   subscribe,
-  unsubscribe
+  unsubscribe,
+  getNames
 } from '../store/index';
 
 @Component({})
@@ -61,12 +62,22 @@ export default class userTable extends Vue {
     {
       title: '姓名',
       key: 'name',
-      dataIndex: 'name'
+      dataIndex: 'name',
+      filters: [],
+      filterMultiple: true,
+      onFilter: (value: string, record: User) => {
+        if (record.name) {
+          return record.name === value;
+        }
+        return false;
+      }
     },
     {
       title: 'Rating',
       dataIndex: 'rating',
-      scopedSlots: { customRender: 'color' }
+      scopedSlots: { customRender: 'color' },
+      sorter: (a: User, b: User) => a.rating - b.rating,
+      sortDirections: ['descend', 'ascend']
     },
     {
       title: '历史最高 Rating',
@@ -89,6 +100,9 @@ export default class userTable extends Vue {
   async created() {
     this.users = (await getUsers()).map(
       v => (Reflect.set(v, 'operation', false), v)
+    );
+    (await getNames()).forEach(name =>
+      (this.columns[1].filters as any[]).push({ text: name, value: name })
     );
     this.loading = false;
     this.tokens.push(
