@@ -44,6 +44,12 @@ export async function delUser(handle: string) {
   store.removeItem(handle);
 }
 
+export async function clear() {
+  await store.clear();
+  PubSub.publish('clear', {});
+  return true;
+}
+
 export async function getUsers() {
   const arr: User[] = [];
   await store.iterate(value => {

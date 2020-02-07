@@ -73,18 +73,25 @@ export default class userTable extends Vue {
 
   loading = true;
   users: User[] = [];
-  token: any = undefined;
+  tokens: any[] = [];
 
   async created() {
     this.users = await getUsers();
     this.loading = false;
-    this.token = subscribe('addUser', (topic: string, user: any) => {
-      this.users.push(user);
-    });
+    this.tokens.push(
+      subscribe('addUser', (topic: string, user: any) => {
+        this.users.push(user);
+      })
+    );
+    this.tokens.push(
+      subscribe('clear', (topic: string) => {
+        this.users.splice(0, this.users.length);
+      })
+    );
   }
   beforeDestroy() {
-    if (this.token) {
-      unsubscribe(this.token);
+    for (const token of this.tokens) {
+      unsubscribe(token);
     }
   }
 
@@ -92,6 +99,7 @@ export default class userTable extends Vue {
     await delUser(handle);
     this.users.splice(row, 1);
   }
+  async refreshUser(handle: string, row: number) {}
 
   getColor(rating: number) {
     if (rating < 1200) return 'gray';

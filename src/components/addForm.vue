@@ -43,12 +43,15 @@
         />
       </a-drawer>
     </a-form-item>
+    <a-form-item>
+      <a-button type="danger" @click="clear">清空</a-button>
+    </a-form-item>
   </a-form>
 </template>
 
 <script>
 import { Component, Vue } from 'vue-property-decorator';
-import { addUser } from '../store';
+import { addUser, clear } from '../store';
 
 function sleep(time) {
   return new Promise((res, rej) => {
@@ -78,9 +81,12 @@ export default class User extends Vue {
           await sleep(500);
         }
       } catch (error) {
-        this.$message.error(`获取 ${handle} 信息失败`, 0);
+        this.$message.error(`获取 ${handle} 信息失败`, 10);
       }
     }
+  }
+  async clear() {
+    clear();
   }
   handleSubmit() {
     this.form.validateFields(async (err, values) => {
