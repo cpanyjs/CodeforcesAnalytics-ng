@@ -4,9 +4,11 @@
       <header-nav></header-nav>
     </a-layout-header>
     <a-layout-content style="padding: 16px 50px;">
-      <router-view
-        style="background-color: white; padding: 20px; min-height: 100%;"
-      />
+      <keep-alive>
+        <router-view
+          style="background-color: white; padding: 20px; min-height: 100%;"
+        />
+      </keep-alive>
     </a-layout-content>
   </a-layout>
 </template>
