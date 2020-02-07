@@ -5,7 +5,11 @@
         Codeforces 统计</router-link
       >
     </h2>
-    <a-menu v-model="current" mode="horizontal" :style="{ lineHeight: '64px' }">
+    <a-menu
+      v-model="current"
+      mode="horizontal"
+      :style="{ lineHeight: '64px', display: 'inline-block' }"
+    >
       <a-menu-item key="user" @click="go('user')">
         <a-icon type="user" />成员
       </a-menu-item>
@@ -23,6 +27,13 @@
         </a-menu-item-group>
       </a-sub-menu>
     </a-menu>
+    <div class="nav-search">
+      <a-input-search
+        placeholder="Handle"
+        style="width: 240px"
+        @search="onSearch"
+      />
+    </div>
   </div>
 </template>
 
@@ -37,6 +48,7 @@ export default class Nav extends Vue {
       this.$router.push(name);
     }
   }
+  onSearch() {}
   created() {
     if (this.$route.name === 'user') {
       this.current = ['user'];
@@ -59,5 +71,8 @@ export default class Nav extends Vue {
 .logo > a {
   color: #000 !important;
   text-decoration: none;
+}
+.nav-search {
+  float: right;
 }
 </style>

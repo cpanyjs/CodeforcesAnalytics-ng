@@ -20,6 +20,7 @@ Vue.component(Form.name, Form);
 Vue.component(Form.Item.name, Form.Item);
 Vue.component(Input.name, Input);
 Vue.component(Input.TextArea.name, Input.TextArea);
+Vue.component(Input.Search.name, Input.Search);
 Vue.component(Layout.name, Layout);
 Vue.component(Layout.Header.name, Layout.Header);
 Vue.component(Layout.Content.name, Layout.Content);
