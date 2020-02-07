@@ -32,10 +32,11 @@
         :visible="showDrawer"
       >
         <div>
-          <a-button type="primary">添加</a-button>
+          <a-button type="primary" @click="multiAdd">添加</a-button>
           <span style="margin-left: 10px;">格式：姓名,Handle</span>
         </div>
         <a-textarea
+          v-model="text"
           style="margin-top: 20px;"
           placeholder=""
           :autosize="{ minRows: 25, maxRows: 25 }"
@@ -48,14 +49,32 @@
 <script>
 import { Component, Vue } from 'vue-property-decorator';
 
+function sleep(time) {
+  return new Promise((res, rej) => {
+    setTimeout(res, time);
+  });
+}
+
 @Component
 export default class User extends Vue {
   loading = false;
   showDrawer = false;
+  text = '';
   data() {
     return {
       form: this.$form.createForm(this)
     };
+  }
+  async multiAdd() {
+    const body = this.text
+      .split('\n')
+      .map(s => s.split(',').map(s => s.trim()))
+      .filter(s => s.length === 2);
+    this.showDrawer = false;
+    for (const [name, handle] of body) {
+      await this.$store.dispatch('addUser', { name, handle });
+      await sleep(500);
+    }
   }
   handleSubmit() {
     this.form.validateFields(async (err, values) => {

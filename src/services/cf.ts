@@ -68,13 +68,41 @@ export async function getUserInfo(cfid: string): Promise<UserDTO> {
 
 export async function getUserStatus(cfid: string): Promise<SubmissionDTO[]> {
   const {
-    data: {
-      result: [data]
-    }
+    data: { result }
   } = await api.get('user.status', {
     params: {
       handle: cfid
     }
   });
-  return data as SubmissionDTO[];
+  return result as SubmissionDTO[];
+}
+
+export async function getUser(cfid: string): Promise<User> {
+  const [info, status] = await Promise.all([
+    getUserInfo(cfid),
+    getUserStatus(cfid)
+  ]);
+  const user = new User(info);
+  status.forEach(sub => user.solved.push(sub));
+  return user;
+}
+
+export class User {
+  handle: string;
+  email: string;
+  rank: string;
+  rating: number;
+  maxRank: string;
+  maxRating: number;
+  name: string | undefined;
+  solved: SubmissionDTO[] = [];
+
+  constructor(data: UserDTO) {
+    this.handle = data.handle;
+    this.email = data.email;
+    this.rank = data.rank;
+    this.rating = data.rating;
+    this.maxRank = data.maxRank;
+    this.maxRating = data.maxRating;
+  }
 }

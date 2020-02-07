@@ -30,7 +30,7 @@
     <div class="nav-search">
       <a-input-search
         placeholder="Handle"
-        style="width: 240px"
+        style="width: 200px"
         @search="onSearch"
       />
     </div>

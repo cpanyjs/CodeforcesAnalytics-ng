@@ -1,11 +1,11 @@
 <template>
-  <a-layout style="height: 100%;">
+  <a-layout style="min-height: 100%;">
     <a-layout-header>
       <header-nav></header-nav>
     </a-layout-header>
     <a-layout-content style="padding: 16px 50px;">
       <router-view
-        style="background-color: white; padding: 20px; height: 100%;"
+        style="background-color: white; padding: 20px; min-height: 100%;"
       />
     </a-layout-content>
   </a-layout>

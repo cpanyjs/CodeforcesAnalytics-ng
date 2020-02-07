@@ -20,9 +20,14 @@
     >
       {{ text }}
     </span>
-    <template slot="operation">
+    <template slot="operation" slot-scope="text, record">
       <a-button type="primary">刷新</a-button>
-      <a-button type="danger" style="margin-left: 10px;">删除</a-button>
+      <a-button
+        type="danger"
+        style="margin-left: 10px;"
+        @click="$store.commit('delUser', record)"
+        >删除</a-button
+      >
     </template>
   </a-table>
 </template>
