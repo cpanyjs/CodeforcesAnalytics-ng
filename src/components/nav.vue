@@ -13,7 +13,9 @@
       <a-menu-item key="user" @click="go('user')">
         <a-icon type="user" />成员
       </a-menu-item>
-      <a-menu-item key="report"><a-icon type="read" />报告</a-menu-item>
+      <a-menu-item key="report" @click="go('report')"
+        ><a-icon type="read" />报告</a-menu-item
+      >
       <!-- <a-sub-menu>
         <span slot="title" class="submenu-title-wrapper"
           ><a-icon type="setting" />设置</span
