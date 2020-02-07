@@ -46,6 +46,7 @@
     <a-form-item>
       <a-button type="danger" @click="clear">清空</a-button>
     </a-form-item>
+    <a-progress v-if="percent >= 0" :percent="percent" />
   </a-form>
 </template>
 
@@ -64,6 +65,7 @@ export default class User extends Vue {
   loading = false;
   showDrawer = false;
   text = '';
+  percent = -1;
   data() {
     return {
       form: this.$form.createForm(this)
@@ -75,6 +77,9 @@ export default class User extends Vue {
       .map(s => s.split(',').map(s => s.trim()))
       .filter(s => s.length === 2);
     this.showDrawer = false;
+    const n = body.length;
+    this.percent = 0;
+    let cnt = 0;
     for (const [name, handle] of body) {
       try {
         if (await addUser(name, handle)) {
@@ -83,7 +88,12 @@ export default class User extends Vue {
       } catch (error) {
         this.$message.error(`获取 ${handle} 信息失败`, 10);
       }
+      cnt++;
+      this.percent = Number(((cnt / n) * 100.0).toFixed(0));
     }
+    setTimeout(() => {
+      this.percent = -1;
+    }, 2000);
   }
   async clear() {
     clear();

@@ -12,6 +12,7 @@ import {
   Input,
   Table,
   Drawer,
+  Progress,
   message
 } from 'ant-design-vue';
 
@@ -31,6 +32,7 @@ Vue.component(Menu.ItemGroup.name, Menu.ItemGroup);
 Vue.component(Menu.SubMenu.name, Menu.SubMenu);
 Vue.component(Table.name, Table);
 Vue.component(Drawer.name, Drawer);
+Vue.component(Progress.name, Progress);
 
 Vue.prototype.$message = message;
 
