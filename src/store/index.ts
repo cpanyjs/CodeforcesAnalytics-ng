@@ -40,6 +40,13 @@ export async function addUser(name: string, handle: string) {
   return user;
 }
 
+export async function updateUser(name: string, handle: string) {
+  const user = await getUser(handle);
+  user.name = name;
+  store.setItem(handle, user);
+  return user;
+}
+
 export async function delUser(handle: string) {
   store.removeItem(handle);
 }

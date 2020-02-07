@@ -21,8 +21,13 @@
     >
       {{ text }}
     </span>
-    <template slot="operation" slot-scope="text, record, row">
-      <a-button type="primary">刷新</a-button>
+    <template slot="operation" slot-scope="flag, record, row">
+      <a-button
+        type="primary"
+        :loading="flag"
+        @click="refreshUser(record.handle, record.name, row)"
+        >刷新</a-button
+      >
       <a-button
         type="danger"
         style="margin-left: 10px;"
@@ -36,7 +41,13 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import { User } from '../services/cf';
-import { getUsers, delUser, subscribe, unsubscribe } from '../store/index';
+import {
+  getUsers,
+  updateUser,
+  delUser,
+  subscribe,
+  unsubscribe
+} from '../store/index';
 
 @Component({})
 export default class userTable extends Vue {
@@ -76,10 +87,13 @@ export default class userTable extends Vue {
   tokens: any[] = [];
 
   async created() {
-    this.users = await getUsers();
+    this.users = (await getUsers()).map(
+      v => (Reflect.set(v, 'operation', false), v)
+    );
     this.loading = false;
     this.tokens.push(
       subscribe('addUser', (topic: string, user: any) => {
+        Reflect.set(user, 'operation', false);
         this.users.push(user);
       })
     );
@@ -99,7 +113,14 @@ export default class userTable extends Vue {
     await delUser(handle);
     this.users.splice(row, 1);
   }
-  async refreshUser(handle: string, row: number) {}
+  async refreshUser(handle: string, name: string, row: number) {
+    Reflect.set(this.users[row], 'operation', true);
+    const user = await updateUser(name, handle);
+    Reflect.set(user, 'operation', false);
+    for (const key in this.users[row]) {
+      Reflect.set(this.users[row], key, Reflect.get(user, key));
+    }
+  }
 
   getColor(rating: number) {
     if (rating < 1200) return 'gray';
