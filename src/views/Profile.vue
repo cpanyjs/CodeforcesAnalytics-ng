@@ -84,12 +84,14 @@ export default class Profile extends Vue {
       const user = await getNameInfo(to.query.name as string);
       if (user) {
         this.user = user;
+        this.$forceUpdate();
       } else {
         next('home');
       }
     } else if (to.query.handle) {
       try {
         this.user = await getUser(to.query.handle as string);
+        this.$forceUpdate();
       } catch (error) {
         next('home');
       }

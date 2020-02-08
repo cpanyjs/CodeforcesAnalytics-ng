@@ -15,7 +15,9 @@ const routes = [
   {
     path: '/user',
     name: 'user',
-    component: User
+    components: {
+      alive: User
+    }
   },
   {
     path: '/report',
