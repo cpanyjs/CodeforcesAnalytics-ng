@@ -83,6 +83,7 @@ export async function getNameInfo(name: string) {
     if (value.name === name) {
       if (!user) {
         user = new User(value);
+        user.name = name;
         user.submission = value.submission;
       } else {
         user.merge(value);
