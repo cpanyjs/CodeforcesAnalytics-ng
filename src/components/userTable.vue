@@ -26,17 +26,17 @@
         name
       }}</router-link>
     </span>
-    <template slot="operation" slot-scope="flag, record, row">
+    <template slot="operation" slot-scope="flag, record">
       <a-button
         type="primary"
         :loading="flag"
-        @click="refreshUser(record.handle, record.name, row)"
+        @click="refreshUser(record.handle, record.name)"
         >刷新</a-button
       >
       <a-button
         type="danger"
         style="margin-left: 10px;"
-        @click="delUser(record.handle, row)"
+        @click="delUser(record.handle)"
         >删除</a-button
       >
     </template>
@@ -130,16 +130,30 @@ export default class userTable extends Vue {
     }
   }
 
-  async delUser(handle: string, row: number) {
-    await delUser(handle);
-    this.users.splice(row, 1);
+  findUser(handle: string) {
+    for (let i = 0; i < this.users.length; i++) {
+      if (this.users[i].handle === handle) {
+        return i;
+      }
+    }
+    return undefined;
   }
-  async refreshUser(handle: string, name: string, row: number) {
-    Reflect.set(this.users[row], 'operation', true);
-    const user = await updateUser(name, handle);
-    Reflect.set(user, 'operation', false);
-    for (const key in this.users[row]) {
-      Reflect.set(this.users[row], key, Reflect.get(user, key));
+  async delUser(handle: string) {
+    let row = this.findUser(handle);
+    if (row) {
+      await delUser(handle);
+      this.users.splice(row, 1);
+    }
+  }
+  async refreshUser(handle: string, name: string) {
+    let row = this.findUser(handle);
+    if (row) {
+      Reflect.set(this.users[row], 'operation', true);
+      const user = await updateUser(name, handle);
+      Reflect.set(user, 'operation', false);
+      for (const key in this.users[row]) {
+        Reflect.set(this.users[row], key, Reflect.get(user, key));
+      }
     }
   }
 
