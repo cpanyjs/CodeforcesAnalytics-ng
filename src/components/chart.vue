@@ -14,12 +14,6 @@ export default {
   data: () => ({}),
   methods: {
     renderChart() {
-      const data = [
-        { type: '一线城市', value: 0.19 },
-        { type: '二线城市', value: 0.21 },
-        { type: '三线城市', value: 0.27 },
-        { type: '四线及以下', value: 0.33 }
-      ];
       const ds = new DataSet();
       const dv = ds.createView().source(this.data.submission);
       dv.transform({
@@ -47,6 +41,9 @@ export default {
         padding: 'auto'
       });
       chart.source(dv);
+      chart.tooltip({
+        showTitle: false
+      });
       chart.legend({
         position: 'right-center',
         offsetX: -100
