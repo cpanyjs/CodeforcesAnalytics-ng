@@ -83,7 +83,7 @@ export async function getUser(cfid: string): Promise<User> {
     getUserStatus(cfid)
   ]);
   const user = new User(info);
-  status.forEach(sub => user.solved.push(sub));
+  status.forEach(sub => user.submission.push(sub));
   return user;
 }
 
@@ -95,7 +95,7 @@ export class User {
   maxRank: string;
   maxRating: number;
   name: string | undefined;
-  solved: SubmissionDTO[] = [];
+  submission: SubmissionDTO[] = [];
 
   constructor(data: UserDTO) {
     this.handle = data.handle;
@@ -104,5 +104,30 @@ export class User {
     this.rating = data.rating;
     this.maxRank = data.maxRank;
     this.maxRating = data.maxRating;
+  }
+
+  merge(user: User) {
+    if (this.name !== user.name) return false;
+    if (user.rating > this.rating) {
+      this.rating = user.rating;
+      this.rank = user.rank;
+      this.handle = user.handle;
+    }
+    if (user.maxRating > this.maxRating) {
+      this.maxRating = user.maxRating;
+      this.maxRank = user.maxRank;
+    }
+    for (const sub of user.submission) {
+      this.submission.push(sub);
+    }
+    this.submission.sort((a: SubmissionDTO, b: SubmissionDTO) => {
+      if (a.id === b.id) {
+        return 0;
+      } else if (a.id < b.id) {
+        return -1;
+      } else {
+        return 1;
+      }
+    });
   }
 }

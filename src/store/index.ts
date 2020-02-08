@@ -76,3 +76,18 @@ export async function getNames() {
   set.forEach(value => arr.push(value));
   return arr;
 }
+
+export async function getNameInfo(name: string) {
+  let user: User | undefined = undefined;
+  await store.iterate((value: User) => {
+    if (value.name === name) {
+      if (!user) {
+        user = new User(value);
+        user.submission = value.submission;
+      } else {
+        user.merge(value);
+      }
+    }
+  });
+  return user;
+}

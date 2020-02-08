@@ -31,6 +31,7 @@
     </a-menu>
     <div class="nav-search">
       <a-input-search
+        v-model="text"
         placeholder="Handle"
         style="width: 200px"
         @search="onSearch"
@@ -45,12 +46,21 @@ import { Component, Vue } from 'vue-property-decorator';
 @Component
 export default class Nav extends Vue {
   current: string[] = [];
+  text = '';
   go(name: string) {
     if (this.$route.name !== name) {
       this.$router.push(name);
     }
   }
-  onSearch() {}
+  onSearch() {
+    this.$router.push({
+      name: 'profile',
+      query: {
+        handle: this.text
+      }
+    });
+    this.text = '';
+  }
   created() {
     if (this.$route.name === 'user') {
       this.current = ['user'];
