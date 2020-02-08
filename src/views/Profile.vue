@@ -24,6 +24,8 @@
         >{{ handle }}</a
       >
     </h1>
+
+    <pie-chart :data="user"></pie-chart>
   </div>
 </template>
 
@@ -33,11 +35,15 @@ import { User, getUser } from '../services/cf';
 import { getNameInfo } from '../store/index';
 import { getColor } from '../util';
 import { Route } from 'vue-router';
+import PieChart from '../components/chart.vue';
 
 @Component({
   props: {
     name: String,
     handle: String
+  },
+  components: {
+    PieChart
   },
   filters: {
     firstUpper(v: string) {
@@ -60,7 +66,7 @@ export default class Profile extends Vue {
 
   user: User | null = null;
 
-  async created() {
+  async mounted() {
     if (this.name) {
       const user = await getNameInfo(this.name);
       if (user) {
