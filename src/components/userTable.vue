@@ -140,14 +140,14 @@ export default class userTable extends Vue {
   }
   async delUser(handle: string) {
     let row = this.findUser(handle);
-    if (row) {
+    if (row !== undefined) {
       await delUser(handle);
       this.users.splice(row, 1);
     }
   }
   async refreshUser(handle: string, name: string) {
     let row = this.findUser(handle);
-    if (row) {
+    if (row !== undefined) {
       Reflect.set(this.users[row], 'operation', true);
       const user = await updateUser(name, handle);
       Reflect.set(user, 'operation', false);
