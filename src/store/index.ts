@@ -43,12 +43,12 @@ export async function addUser(name: string, handle: string) {
 export async function updateUser(name: string, handle: string) {
   const user = await getUser(handle);
   user.name = name;
-  store.setItem(handle, user);
+  await store.setItem(handle, user);
   return user;
 }
 
-export async function delUser(handle: string) {
-  store.removeItem(handle);
+export function delUser(handle: string) {
+  return store.removeItem(handle);
 }
 
 export async function clear() {
