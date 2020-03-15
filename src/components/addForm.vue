@@ -55,6 +55,9 @@
       </a-drawer>
     </a-form-item>
     <a-form-item>
+      <a-button type="primary" @click="refreshAll">刷新全部</a-button>
+    </a-form-item>
+    <a-form-item>
       <a-button type="danger" @click="clear">清空</a-button>
     </a-form-item>
     <a-progress v-if="percent >= 0" :percent="percent" />
@@ -63,7 +66,7 @@
 
 <script>
 import { Component, Vue } from 'vue-property-decorator';
-import { addUser, clear } from '../store';
+import { addUser, clear, getUsers } from '../store';
 
 function sleep(time) {
   return new Promise((res, rej) => {
@@ -101,6 +104,11 @@ export default class User extends Vue {
     setTimeout(() => {
       this.percent = -1;
     }, 2000);
+  }
+  async refreshAll() {
+    const allUser = await getUsers();
+    await clear();
+    this.multiAdd(allUser.map(user => [user.name, user.handle]));
   }
   clear() {
     clear();
