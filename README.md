@@ -1,5 +1,7 @@
 # Codeforces 统计
 
+[![Netlify Status](https://api.netlify.com/api/v1/badges/5d8c4707-1d03-4ad1-bde2-01d81a2b6caa/deploy-status)](https://app.netlify.com/sites/cfany/deploys)
+
 ## Project setup
 
 ```bash
