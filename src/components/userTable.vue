@@ -83,7 +83,19 @@ export default class userTable extends Vue {
       title: 'Rating',
       dataIndex: 'rating',
       scopedSlots: { customRender: 'color' },
-      sorter: (a: User, b: User) => a.rating - b.rating,
+      sorter: (a: User, b: User) => {
+        const fa = Reflect.has(a, 'rating'),
+          fb = Reflect.has(b, 'rating');
+        if (fa && fb) {
+          return a.rating - b.rating;
+        } else if (fa) {
+          return 1;
+        } else if (fb) {
+          return -1;
+        } else {
+          return 0;
+        }
+      },
       sortDirections: ['descend', 'ascend']
     },
     {

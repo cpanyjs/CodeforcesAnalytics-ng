@@ -32,7 +32,18 @@
         :visible="showDrawer"
       >
         <div>
-          <a-button type="primary" @click="multiAdd">添加</a-button>
+          <a-button
+            type="primary"
+            @click="
+              multiAdd(
+                text
+                  .split('\n')
+                  .map(s => s.split(',').map(s => s.trim()))
+                  .filter(s => s.length === 2)
+              )
+            "
+            >添加</a-button
+          >
           <span style="margin-left: 10px;">格式：姓名,Handle</span>
         </div>
         <a-textarea
@@ -71,11 +82,7 @@ export default class User extends Vue {
       form: this.$form.createForm(this)
     };
   }
-  async multiAdd() {
-    const body = this.text
-      .split('\n')
-      .map(s => s.split(',').map(s => s.trim()))
-      .filter(s => s.length === 2);
+  async multiAdd(body) {
     this.showDrawer = false;
     const n = body.length;
     this.percent = 0;
@@ -95,7 +102,7 @@ export default class User extends Vue {
       this.percent = -1;
     }, 2000);
   }
-  async clear() {
+  clear() {
     clear();
   }
   handleSubmit() {
